@@ -9,11 +9,11 @@ fn main() -> std::io::Result<()> {
         cli::Commands::Log {
             message,
             level,
-            fields,
+            field,
             ..
         } => {
             let parsed_level = cli::parse_level(&level);
-            let parsed_fields = cli::parse_fields(fields);
+            let parsed_fields = cli::parse_fields_from_pairs(field);
             amber_lib::log(parsed_level, &message, &parsed_fields)?;
         }
     }

@@ -6,12 +6,12 @@
 rustPlatform.buildRustPackage {
   pname = "amber";
   version = "0.1.0";
-  src = lib.source.clearSources ./.;
+  src = ./.;
   cargoLock.lockFile = ./Cargo.lock;
   cargoPackageName = "amber";
   nativeBuildInputs = [ rustfmt ];
   meta = {
-    description = "Beautiful terminals";
+    description = "Small Tools - Beautiful Terminals";
     homepage = "https://github.com/dominicegginton/amber";
     platforms = lib.platforms.all;
   };
