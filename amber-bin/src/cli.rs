@@ -20,8 +20,8 @@ pub enum Commands {
         #[arg(long, default_value_t = false)]
         structured: bool,
 
-        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-        fields: Vec<String>,
+        #[arg(long, num_args = 2, action = clap::ArgAction::Append)]
+        field: Vec<String>,
     },
 }
 
@@ -35,16 +35,14 @@ pub fn parse_level(s: &str) -> Level {
     }
 }
 
-pub fn parse_fields(fields: Vec<String>) -> Vec<(&'static str, &'static str)> {
+pub fn parse_fields_from_pairs(field: Vec<String>) -> Vec<(&'static str, &'static str)> {
     let mut result = Vec::new();
-    for field in fields {
-        if let Some(eq_pos) = field.find('=') {
-            let (key, value) = field.split_at(eq_pos);
-            let value = &value[1..];
-            let key_str: &'static str = Box::leak(key.to_string().into_boxed_str());
-            let value_str: &'static str = Box::leak(value.to_string().into_boxed_str());
-            result.push((key_str, value_str));
-        }
+    let mut i = 0;
+    while i + 1 < field.len() {
+        let key_str: &'static str = Box::leak(field[i].clone().into_boxed_str());
+        let value_str: &'static str = Box::leak(field[i + 1].clone().into_boxed_str());
+        result.push((key_str, value_str));
+        i += 2;
     }
     result
 }
